@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+   <meta charset="UTF-8">
+   <title>clock.html</title>
+   <style>
+      canvas {
+         border: 1px dotted skyblue;
+      }
+   </style>
+</head>
+<body>
+   <canvas id="myCanvas" width="500" height="500"></canvas>
+
+   <script>
+      var canvas = document.querySelector("#myCanvas");
+      var context = canvas.getContext("2d");
+
+      var clockImg = new Image();
+      var hourImg = new Image();
+      var minImg = new Image();
+      var secImg = new Image();
+
+      clockImg.src = "images/dial.png";
+   
+      context.translate(250,250);
+
+      var angle;
+
+      clockImg.onload = function() {
+         context.drawImage(clockImg, -139.5,-139.5,279,279);
+         hourImg.src = "images/clock_hour.png";
+         hourImg.onload = function() {
+            angle= (9/12*360 + 30*30/60)*(Math.PI/180);
+            context.rotate(angle);
+            context.drawImage(hourImg, -3,-100, 6, 100);
+
+            minImg.src = "images/clock_min.png";
+
+            minImg.onload = function() {
+               context.rotate(angle* (-1));
+               angle= 180*(Math.PI/180);
+               
+               context.rotate(angle);
+               context.drawImage(minImg, -3,-100,6,100);
+
+               secImg.src = "images/clock_sec.png";
+               secImg.onload = function() {
+                  context.rotate(angle* (-1));
+                  angle= 5*360/60*(Math.PI/180);
+                  context.rotate(0);
+                  context.rotate(angle);
+                  context.drawImage(secImg, -3, -100, 6, 100);
+               };
+            };
+         };
+      };
+   </script>
+</body>
+</html>

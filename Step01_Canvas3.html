@@ -2,63 +2,16 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Step01_Canvas3.html</title>
-	<style>
-		#myCanvas{
-			border: 1px solid red;
-		}
-	</style>
+	<title>Document</title>
 </head>
 <body>
-<canvas id="myCanvas" width="500" height="500"></canvas>
-<script src="js/jquery-3.3.1.js"></script>
 <script>
-	// canvas 요소의 참조값 얻어오기
-	var canvas = document.querySelector("#myCanvas");
-	//제이쿼리로 할거면 $("#myCanvas")[0]
-	// canvas에 렌더링 할 수 있는 context의 참조값 얻어오기
-	var context = canvas.getContext("2d");
-
-	//이미지 로딩하기 
-	var rabbitImg=new Image();
-	//이미지가 로딩 완전히 로딩될 때까지 기다리지 않는다
-	rabbitImg.src="images/dua/endk4.png";
-
-
-	// //1. 이미지 로딩이 완료되었을 때, 호출되는 함수 등록
-	// rabbitImg.onload=function(){
-	// 	//로딩한 토끼 이미지 그리기
-	// 	// .drawImage(이미지, x, y, width, height)
-	// 	context.drawImage(rabbitImg, 0, 0, 100, 100);
-	// };
-
-
-
-	//이미지의 x, y 좌표를 저장할 변수
-	var rabbitX=250;
-	var rabbitY=250;
-	// 2. 20/1000초 마다 새로 그리기
-	setInterval(function(){
-		//canvas의 특정 사각형 영역 clear
-		// .clearRect(x,y,width,height)
-		context.clearRect(0,0,500,500);
-		/* x, y 좌표에서 영역을 500, 500으로 잡아서
-		 그 영역을 깨끗하게 하겠다는 의미.*/
-
-
-		// 이미지 그리기
-		context.drawImage(rabbitImg, rabbitX-100, rabbitY-100, 200, 200);
-	}, 20);
-
-
-	
-	// canvas 안에서의 mouse의 좌표를 rabbitX, rabbitY에 반영
-	$("#myCanvas").on("mousemove", function(event){
-		//이벤트가 일어난 곳의 좌표를 토끼의 좌표에 반영
-		rabbitX=event.offsetX;
-		rabbitY=event.offsetY;
-		context.drawImage(rabbitImg, rabbitX, rabbitY, 200, 200);
-	});
-</script>	
+	// var isShooted==isRabbitDie;
+	if(isRabbitDie){
+		var snipeY=e.offsetY+30;
+		var snipeX=e.offsetX;
+		context.drawImage(snipeImg, snipeX-50, snipeY-50, 100, 100);
+	};
+</script>
 </body>
 </html>

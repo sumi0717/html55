@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+   <meta charset="UTF-8">
+   <title>clock_Answer.html</title>
+   <style>
+      canvas {
+         border: 1px dotted skyblue;
+      }
+   </style>
+</head>
+<body>
+   <canvas id="myCanvas" width="500" height="500"></canvas>
+<script>
+	var canvas=document.querySelector("#myCanvas");
+	var context=canvas.getContext("2d");
+
+
+	//시계 다이얼 이미지 로딩 
+	var dialImg=new Image();
+	dialImg.src="images/dial.png";
+
+	//초침 
+	var secImg=new Image();
+	secImg.src="images/clock_sec.png";
+	//분침
+	var minImg=new Image();
+	minImg.src="images/clock_min.png";
+	//시침
+	var hourImg=new Image();
+	hourImg.src="images/clock_hour.png";
+
+	//현재 시간
+	var hour=9;
+	var min=30;
+	var sec=5;
+
+	//회전 각도 계산
+	// 6은, 1초, 1분에 초침, 분침이 도는 각도. 60/360
+	var rSec=sec*6*(Math.PI/180); //초침의 회전각도
+	var rMin=min*6*(Math.PI/180) + 6*(sec/60)*(Math.PI/180); // 분침의 회전각도
+	var rHour=hour*30*(Math.PI/180) + 30*(min/60)*(Math.PI/180); 
+	// 시침의 회전각도.
+	// 12/360가 시침이 시간마다 도는 회전 각도.
+	// 6*(sec/60)*(Math.PI/180) 는는 비율을 맞추기 위해 추가로 더해줘야 하는 값.
+	// (Math.PI/180)는 radian(각도의 단위)으로 바꾸기 위해 곱하는 값.
+
+	//지속적으로 다시 그려지도록
+	setInterval(drawClock,20);
+
+
+ 	//translate는 중앙 축을 기준으로 대상을 이동시키는 함수!
+
+
+	//이미지 로딩된 카운트
+	var loadingCount=0;
+
+
+	dialImg.onload=function(){
+		loadingCount++;
+		if(loadingCount==4){//이미지가 모두 로딩 됐으면
+			drawClock(); //시계를 그린다.
+		};
+	};
+	secImg.onload=function(){
+		loadingCount++;
+		if(loadingCount==4){//이미지가 모두 로딩 됐으면
+			drawClock(); //시계를 그린다.
+		};
+
+	};
+	minImg.onload=function(){
+		loadingCount++;
+		if(loadingCount==4){//이미지가 모두 로딩 됐으면
+			drawClock(); //시계를 그린다.
+		};
+
+	};
+	hourImg.onload=function(){
+		loadingCount++;
+		if(loadingCount==4){//이미지가 모두 로딩 됐으면
+			drawClock(); //시계를 그린다.
+		};
+
+	};
+
+
+	//시계를 그리는 함수 drawClock();
+	function drawClock(){
+		//context의 현재 상태 저장하기(default 상태)
+		context.save(); //context에선 save라는 함수를 콜하면 현재 상태가 저장이 됨.
+
+
+		context.translate(250,250);
+		//시계 다이얼 그리기
+		context.drawImage(dialImg, -150, -150, 300, 300);
+
+		//초침 그리기
+		context.rotate(rSec);
+		context.drawImage(secImg, -3, -100, 6, 100);
+
+		//분침 그리기
+		context.rotate(rMin-rSec);
+		/* 분침을 그릴 때는 rMin만큼만 회전해야 하는데 
+		초침을 돌린 후이기 때문에 rMin+rSec 각도만큼 돌아가게 됨.
+		그러므로 초침을 그릴 때 회전시킨 양 만큼 빼줘야, 
+		rMin만큼만 돌아가게 됨. 즉 rMin-rSec해줘야~*/
+		context.drawImage(minImg, -3, -100, 6, 100);
+
+		//시침 그리기
+		context.rotate(rHour-rMin);
+		//위와 같은 원리로 rHour-rMin해주는 것.
+		context.drawImage(hourImg, -3, -90, 6, 90);
+
+		//저장된 상태로 context 되돌리기
+		context.restore(); //save하고 작업하고 restore하고!
+
+	};
+</script>
+</body>
+</html>

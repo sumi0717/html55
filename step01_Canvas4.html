@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>step01_Canvas4.html</title>
+	<style>
+		#myCanvas{
+			border: 1px solid orange;
+		}
+	</style>
+</head>
+<body>
+<canvas id="myCanvas" width="500" height="500"></canvas>
+<br/>
+
+<button id="rotateBtn">시계방향</button>
+<button id="reverseBtn">반시계방향</button>	
+<script src="js/jquery-3.3.1.js"></script>
+<script>
+	var canvas=document.querySelector("#myCanvas");
+	// context 객체
+	var context=canvas.getContext("2d");
+
+	var compassImg=new Image();
+	compassImg.src="images/compass.png";
+
+	compassImg.onload=function(){
+		// context 좌표계를 평행이동 시키기
+		context.translate(250,250);
+		// context 좌표계를 회전 시키기
+		var angle=45*(Math.PI/180);
+		context.rotate(angle);
+
+		context.drawImage(compassImg, -150, -150, 300, 300)
+		// 이미지 x좌표 y좌표 width, height
+	};
+	
+	
+
+	//절대 값이 아니고 누적된 값.
+
+	$("#rotateBtn").click(function(){
+		var angle=10*(Math.PI/180);
+		context.rotate(angle);
+		context.drawImage(compassImg, -150, -150, 300, 300)
+	});
+
+	$("#reverseBtn").click(function(){
+		var angle=-10*(Math.PI/180);
+		context.rotate(angle);
+		context.drawImage(compassImg, -150, -150, 300, 300)
+	});
+</script>
+</body>
+</html>
