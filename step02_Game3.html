@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Step02_Game3.html</title>
+</head>
+<body>
+<canvas id="myCanvas" width="800" height="500"></canvas>
+<script src="js/jquery-3.3.1.js"></script>
+<script>
+	var canvas=document.querySelector("#myCanvas");
+	var context=canvas.getContext("2d");
+
+	//배경이미지 로딩하기
+	var backImg=new Image();
+	backImg.src="images/background.jpg";
+
+	//로또 볼 이미지를 저장할 배열
+	var ballImgs=[];
+
+	//반복문 돌면서 이미지 객체를 생성 로딩해서 배열에 저장
+	for(var i=0; i<45; i++){
+		var tmp=new Image();
+		tmp.src="images/lotto-ball-"+(i+1)+".png";
+
+		ballImgs.push(tmp)
+	}
+
+	//공의 정보를 저장할 배열
+	var balls=[];
+	//반복문 돌면서 45개의 공의 초기정보 구성해서 배열에 저장
+	for(var i=0; i<45; i++){
+		var tmp={};
+		tmp.index=i;
+		tmp.x=400;
+		tmp.y=250;
+		tmp.speedX=Math.random()*20-10;
+		tmp.speedY=Math.random()*20-10;
+
+		balls.push(tmp);
+	}
+
+
+	setInterval(drawScreen, 20);
+
+	function drawScreen(){
+		context.drawImage(backImg, 0, 0, 800, 500);
+		//배열에 담긴 정보를 바탕으로 45개의 공 그리기
+		for(var i=0; i<45; i++){
+			var tmp=balls[i];
+			context.drawImage(ballImgs[tmp.index], 
+				tmp.x-25, tmp.y-25, 50, 50);
+		};
+		moveBall();
+	};
+
+	function moveBall(){
+		for(var i=0; i<45; i++){
+			var tmp=balls[i];
+			tmp.x += tmp.speedX;
+			tmp.y += tmp.speedY;
+
+			if(tmp.x <= 25 || tmp.x >= 775){
+				tmp.speedX *= -1;
+			};
+			if(tmp.y <= 25 || tmp.y >= 475){
+				tmp.speedY *= -1;
+			};
+		};
+		
+	};
+</script>	
+</body>
+</html>

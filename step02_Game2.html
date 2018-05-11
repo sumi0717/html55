@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>step02_Game2.html</title>
+</head>
+<body>
+<canvas id="myCanvas" width="800" height="500"></canvas>	
+<script src="js/jquery-3.3.1.js"></script>
+<script>
+	var canvas=document.querySelector("#myCanvas");
+	var context=canvas.getContext("2d");
+
+	//배경 이미지 로딩하기
+	var backImg=new Image();
+	backImg.src="images/background.jpg";
+
+	//공 이미지 로딩
+	var ballImgs=[];
+	for(var i=0; i<45; i++){
+		var tmp=new Image();
+		tmp.src="images/lotto-ball-"+i+".png";
+		ballImgs.push(tmp);
+	};
+
+	var balls=[];
+
+	var ballX=Math.random()*800
+		, ballY=Math.random()*500;
+	var speedX=1.5, speedY=1.5;
+
+	setInterval(drawScreen, 20);
+
+	function drawScreen(){
+		context.drawImage(backImg, 0, 0, 800, 500);
+		// context.drawImage(ballImgs, ballX-25, ballY-25, 50, 50);
+
+		for(var i=0; i<45; i++){
+			
+			context.drawImage(ballImgs[i], 
+				ballX-25, ballY-25, 50, 50);
+		};
+
+		moveBall();
+	};
+
+	function moveBall(){
+		for(var i=0; i<ballImgs.length; i++){
+			var tmp=ballImgs[i];
+			tmp.x = tmp.x + tmp.speedX;
+			tmp.y = tmp.y + tmp.sppedY;
+			ballX += speedX;
+		ballY += speedY;
+
+		//위쪽 혹은 아래쪽 한계점에 다다랐을 때
+		if(ballY >= 475 || ballY <= 25){
+			// y방향 속도의 부호를 반대로 바꾼다
+			speedY *= -1; 
+			// -1해주면 반대방향으로 됨. speedY = speedY*(-1); 
+
+			
+		}
+
+		//왼쪽 혹은 오른쪽 한계점에 다다랐을 때
+		if(ballX >= 775 || ballX <= 25){
+			// x방향 속도의 부호를 반대로 바꾼다.
+			speedX *= -1;
+
+		}
+		
+			
+		}
+		
+	}
+
+
+</script>
+</body>
+</html>

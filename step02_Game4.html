@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Step02_Game4.html</title>
+	<style>
+		.wrapper img{
+			width: 50px;
+		}
+		/*.wrapper{
+			float: left;
+		}*/
+	</style>
+</head>
+<body>
+<canvas id="myCanvas" width="800" height="500"></canvas>
+<br/>
+<button id="getBtn">추출하기</button>
+<div class="wrapper">
+	
+</div>
+<script src="js/jquery-3.3.1.js"></script>
+<script>
+	var canvas=document.querySelector("#myCanvas");
+	var context=canvas.getContext("2d");
+
+	//배경이미지 로딩하기
+	var backImg=new Image();
+	backImg.src="images/background.jpg";
+
+	//로또 볼 이미지를 저장할 배열
+	var ballImgs=[];
+
+	//반복문 돌면서 이미지 객체를 생성 로딩해서 배열에 저장
+	for(var i=0; i<45; i++){
+		var tmp=new Image();
+		tmp.src="images/lotto-ball-"+(i+1)+".png";
+
+		ballImgs.push(tmp)
+	}
+
+	//공의 정보를 저장할 배열
+	var balls=[];
+	//반복문 돌면서 45개의 공의 초기정보 구성해서 배열에 저장
+	for(var i=0; i<45; i++){
+		var tmp={};
+		tmp.index=i;
+		tmp.x=400;
+		tmp.y=250;
+		tmp.speedX=Math.random()*20-10;
+		tmp.speedY=Math.random()*20-10;
+		tmp.angle=0; //회전량 
+		tmp.angleSpeed=Math.random()*2-1; //회전 속도 
+
+		balls.push(tmp);
+	}
+
+
+	setInterval(drawScreen, 20);
+
+	function drawScreen(){
+		context.drawImage(backImg, 0, 0, 800, 500);
+		//배열에 담긴 정보를 바탕으로 45개의 공 그리기
+		for(var i=0; i<balls.length; i++){
+			var tmp=balls[i];
+
+			//context의 현재 상태 저장
+			context.save();
+			//평행이동
+			context.translate(tmp.x, tmp.y);
+			/* 공을 특정 좌표에 위치시킨게 아니고,
+			좌표계 자체를 이동시켜서 공을 그린것. 
+			즉 공이 좌표계의 원점에 위치한것 (0, 0)
+			이렇게 하는 이유는, 좌표계 자체를 이동시켜서
+			원점(0,0)에 위치시키면, 공을 회전시킬 수 있어서!!*/
+
+			//회전
+			context.rotate(tmp.angle);
+
+			context.drawImage(ballImgs[tmp.index],
+				-25, -25, 50, 50);
+			//저장된 상태로 되돌리기
+			context.restore();
+		
+		};
+		moveBall();
+	};
+
+	function moveBall(){
+		for(var i=0; i<balls.length; i++){
+			var tmp=balls[i];
+
+			//좌표 움직이기
+			tmp.x += tmp.speedX;
+			tmp.y += tmp.speedY;
+
+			//회전 시키기
+			tmp.angle += tmp.angleSpeed;
+
+			if(tmp.x <= 25 || tmp.x >= 775){
+				tmp.speedX *= -1;
+			};
+			if(tmp.y <= 25 || tmp.y >= 475){
+				tmp.speedY *= -1;
+			};
+		};
+		
+	};
+
+	var count=0;
+
+	$("#getBtn").click(function(){
+		count++;
+
+		if(count>6){
+			alert("끝이다냥");
+			return;
+		};
+
+
+		//balls 배열의 방의 사이즈
+		var remainBalls=balls.length;
+		//추출할 인덱스를 랜덤하게 얻어내기
+		var index=parseInt(Math.random()*remainBalls);
+		//추출할 ball의 참조값
+		var ball=balls[index];
+		//추출된 로또 번호
+		var num=ball.index+1;
+		//배열에서 제거
+		balls.splice(index, 1);
+		// .wrapper div에 img 출력
+		// 로딩할 이미지 경로
+		var imgSrc="images/lotto-ball-"+num+".png";
+		$("<img/>").attr("src", imgSrc).appendTo(".wrapper");
+
+	});
+
+</script>	
+</body>
+</html>
