@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>step05_Websql.html</title>
+</head>
+<body>
+<input type="text" id="inputNum" placeholder="번호 입력"/>
+<input type="text" id="inputName" placeholder="이름 입력"/>
+<input type="text" id="inputAddr" placeholder="주소 입력"/>
+<button id="saveBtn">저장</button>
+<button id="loadBtn">목록 불러오기</button>
+<script src="js/jquery-3.3.1.js"></script>
+<script>
+	// .openDatabase(db 이름, 버전, 설명, 크기)
+	var  db=window.openDatabase("MYDB", "1.0", "test", 1024*1000*10);
+
+	// function 괄호안의 변수명은 임의로 설정 가능.
+	db.transaction(function(dbHelper){
+		// dbHelper.executeSql("DROP TABLE member");
+		// member 라는 이름의 테이블이 존재하지 않으면 만들기 
+		//executeSqul라는 함수를 전달하면서 실행할 명령어를 전달?
+		//localStorage를 좀 더 체계적으로 활용하겠다?..는?
+		//Sql은 대소문자를 가리지 않음. 예약어는 대문자로 표시.
+		//db에 저장하는 db타입은 크게 숫자(INTEGER), 문자(TEXT), 날짜(DATE?)로 나뉨
+		dbHelper.executeSql("CREATE TABLE member(num INTEGER PRIMARY KEY, name TEXT, addr TEXT)");
+		/* primary key라고 해놓으면 동일한 숫자를, 중복되게 가질 수 없음.
+		겹치는 값을 허용하지 않음. (ex 주민번호) */
+	});
+
+	// INSERT INTO member (num,name,addr) VALUES (1, '고기고기', '고기왕국');
+
+	// SELECT num,name,addr FROM member;
+
+	$("#saveBtn").click(function(){
+		//입력한 번호 이름 주소를 읽어와서 
+		var num=$("#inputNum").val();
+		var name=$("#inputName").val();
+		var addr=$("#inputAddr").val();
+		//db 에 저장하는 작업하기 
+		db.transaction(function(dbHelper){
+			var sql="INSERT INTO member (num,name,addr) VALUES(?,?,?)";
+			// .executeSql(실행할 sql문, ?에 바인딩할 내용, 성공함수, 실패함수)
+			dbHelper.executeSql(sql, [num,name,addr], success, fail);
+		});
+		function success(){
+			alert("저장했습니다.");
+		}
+		function fail(){
+			alert("실패!");
+		}
+	});
+
+	$("#loadBtn").click(function(){
+		db.transaction(function(dbHelper){
+			dbHelper.executeSql("SELECT num,name,addr FROM member", [], success, fail);
+		})
+		function success(dbHelper, rs){
+			for(var i=0; i<rs.rows.length; i++){
+				//row는 select된 정보가 담긴 object이다
+				var row=rs.rows.item(i);
+				console.log(row);
+
+			};
+		}
+		function fail(){
+			alert("실패!");
+		}
+	});
+</script>
+</body>
+</html>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>step03_Example.html</title>
+	<link rel="stylesheet" href="css/bootstrap.css"/>
+</head>
+<body>
+<div class="container">
+	<h3>기본 form 구성하기</h3>
+	<form action="loginAction" id="myForm"> 
+		<!-- form을 제출할때는 submit 이라는 event가 발생한다 -->
+		<div class="form-group">
+			<label for="email">이메일</label>
+			<input type="text" class="form-control" id="email"/>
+			
+		</div>
+		<div class="form-group">
+			<label for="pwd">비밀번호</label>
+			<input type="password" class="form-control" id="pwd"/>
+			
+		</div>
+		<div class="checkbox">
+			<label>
+				<input type="checkbox" id="isSave"/> 저장
+			</label>
+		</div>
+		<button type="submit" class="btn btn-info">로그인</button>
+		<button type="reset" class="btn btn-danger">취소</button>
+	</form>	
+</div>
+<script src="js/jquery-3.3.1.js"></script>	
+<script>
+
+	//localStorage에 저장된 정보가 있으면 form에 출력하기
+	var email=localStorage.email;
+	var pwd=localStorage.pwd;
+
+	if(email != undefined){
+		$("#email").val(email);
+		$("#pwd").val(pwd);
+		//체크박스 체크해주기
+		$("#isSave").prop("checked", true);
+	}
+
+	//form에 submit 이벤트가 일어났을 때 실행할 함수 등록
+	$("#myForm").on("submit", function(e){
+		//체크 박스가 체크 되었는지 여부
+		var isChecked=$("#isSave").prop("checked");
+		if(isChecked){
+			//입력한 이메일과 비밀번호를 읽어와서
+			var email=$("#email").val();
+			var pwd=$("#pwd").val();
+			//localStorage에 저장한다
+			localStorage.email=email;
+			localStorage.pwd=pwd;
+			e.preventDefault();
+
+		}else{
+			//체크되지 않았으면 저장된 내용 삭제하기
+			delete localStorage.email;
+			delete localStorage.pwd;
+		};
+	});
+</script>
+</body>
+</html>

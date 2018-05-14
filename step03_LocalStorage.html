@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Step03_LocalStorage.html</title>
+</head>
+<body>
+<input type="text" id="inputMsg"/>
+<button id="saveBtn">저장</button>
+<button id="loadBtn">불러오기</button>
+<button id="deleteBtn">삭제</button>
+<button id="clearBtn">localStorage 초기화</button>
+<script src="js/jquery-3.3.1.js"></script>
+<script>
+	/*
+		[ localStorage ]
+
+		- client 의 웹 브라우저에 문자열을 영구 저장할수 있다.
+		- localStorage 기본 object 를 사용한다. 
+		- 문자열만 저장할수 있는 object 라고 생각하면 된다. 
+		- 한번 저장되면 임의로 지우지 않는 이상 영구 저장된다.
+	*/
+	$("#saveBtn").click(function(){
+		//입력한 문자열 읽어오기
+		var msg=$("#inputMsg").val();
+		//localStorage 에 저장하기
+		localStorage.savedMsg=msg;
+
+		alert("저장 했습니다.");
+	});	
+
+	$("#loadBtn").click(function(){
+		// localStorage 에 savedMsg 라는 키값으로 저장된 문자열 읽어오기 
+		var msg=localStorage.savedMsg;
+
+		if(msg==undefined){
+			alert("저장된 문자열이 없습니다.");
+		}else{
+			// input 요소의 value 값으로 출력하기 
+			$("#inputMsg").val(msg);
+		}
+	});
+
+	$("#deleteBtn").click(function(){
+		//delete 예약어를 이용해서 특정방을 삭제한다. 
+		delete localStorage.savedMsg;
+		alert("삭제 했습니다.");
+	});
+
+	$("#clearBtn").click(function(){
+		//localStorage 전체 초기화
+		localStorage.clear();
+		alert("초기화 했습니다.");
+	});
+</script>	
+</body>
+</html>

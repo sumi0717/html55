@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>step04_sessionStoarage.html</title>
+</head>
+<body>
+<input type="text" id="inputMsg">	
+<button id="saveBtn">저장</button>
+<button id="loadBtn">불러오기</button>
+<script src="js/jquery-3.3.1.js"></script>
+<script>
+	/*
+		[sessionStorage]
+
+	- localStorage와 사용법이 같다
+	- 웹브라우저를 닫기 전까지 유지된다
+	- 새로 고침해도 데이터가 유지된다
+	*/
+	$("#saveBtn").click(function(){
+		//입력한 문자열을 읽어와서
+		var msg=$("#inputMsg").val();
+		//sessionStorage에 저장하기
+		sessionStorage.savedMsg=msg;
+
+	});	
+
+	$("#loadBtn").click(function(){
+		var savedMsg=sessionStorage.savedMsg;
+		if(savedMsg != undefined){
+			$("#inputMsg").val(savedMsg);
+		}else{
+			alert("sessionStorage에 저장된 문자열이 없습니다");
+		};
+	});
+</script>
+</body>
+</html>
