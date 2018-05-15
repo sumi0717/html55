@@ -2,6 +2,15 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
+	<!-- 
+		[데이타베이스 문법]
+	SELECT clumn name FROM table name WHERE condition
+	INSERT INTO table name (column name)
+	VALUES(value1, value2 ...)
+	UPDATE table name SET colume=value1, ...
+	WHERE condition
+	DELETE FROM table name WHERE condition 
+	-->
 	<title>step05_Websql2.html</title>
 	<link rel="stylesheet" href="css/bootstrap.css"/>
 	<style>
@@ -37,6 +46,8 @@
 <script>
 	// .openDatabase(db 이름, 버전, 설명, 크기)
 	var  db=window.openDatabase("MYDB", "1.0", "test", 1024*1000*10);
+	// db 객체를 얻어오기 위한 작업
+	// db에 작업을 하려면 dbhelper 객체 있어야함.
 
 	// function 괄호안의 변수명은 임의로 설정 가능.
 	db.transaction(function(dbHelper){
@@ -46,7 +57,7 @@
 		//localStorage를 좀 더 체계적으로 활용하겠다?..는?
 		//Sql은 대소문자를 가리지 않음. 예약어는 대문자로 표시.
 		//db에 저장하는 db타입은 크게 숫자(INTEGER), 문자(TEXT), 날짜(DATE?)로 나뉨
-		dbHelper.executeSql("CREATE TABLE member(num INTEGER PRIMARY KEY, name TEXT, addr TEXT)");
+		dbHelper.executeSql("CREATE TABLE IF NOT EXISTS member(num INTEGER PRIMARY KEY, name TEXT, addr TEXT)");
 		/* primary key라고 해놓으면 동일한 숫자를, 중복되게 가질 수 없음.
 		겹치는 값을 허용하지 않음. (ex 주민번호) */
 	});
